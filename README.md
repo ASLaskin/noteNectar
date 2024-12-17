@@ -30,7 +30,7 @@
 
    - Copy `.env.example` to `.env` and fill in your database URL and authentication provider details.
 
-5. Migrate scheme to DB `npx prisma db push` for MingoDB or `npx prisma migrate dev` for MySQL.
+5. Migrate scheme to DB `npx prisma db push` for MongoDB or `npx prisma migrate dev` for MySQL.
 
 6. Run the development server:
 

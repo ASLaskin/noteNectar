@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { AuthContext } from '@/context/AutxContext';
+import  Header from "@/components/header"
 
 import './globals.css';
 import { CONFIG } from './config';
@@ -15,9 +16,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={inter.className}>
-      <body>
-        <AuthContext>{
-          children}
+      <body className='bg-black'>
+        <AuthContext>
+          <Header/>
+          {children}
         </AuthContext>
       </body>
     </html>

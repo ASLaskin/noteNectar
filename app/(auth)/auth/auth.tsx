@@ -1,14 +1,14 @@
-'use client';
+"use client"
 import { useCallback, useState, useEffect } from 'react';
-import { useForm, FieldValues, SubmitHandler, set } from 'react-hook-form';
+import { useForm, FieldValues, SubmitHandler } from 'react-hook-form';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { motion, useAnimation, useAnimationControls } from 'framer-motion';
+import { motion, useAnimationControls } from 'framer-motion';
 import { useSearchParams } from 'next/navigation';
 
 import SocialLogin from './components/SocialLogin';
 import Divider from './components/Divider';
 import Input from '@/components/ui/input';
-import {nameValidation, passwordValidation } from './validation/validation';
+import {nameValidation, passwordValidation} from './validation/validation';
 import Loading from '@/components/ui/Loading';
 import { useAuth } from './hooks/useAuth';
 import FadeIn from '@/components/animation/FadeIn';
@@ -101,7 +101,7 @@ const Auth = () => {
   };
 
   return (
-    <div>
+    <div className="bg-black text-white">
       <motion.div initial={{ opacity: 1, x: 0 }} animate={controls}>
         <FadeIn delay={0.2} direction="left">
           <SocialLogin />
@@ -189,6 +189,7 @@ const Auth = () => {
             <button
               type="submit"
               disabled={loading || showMessage?.type === 'success'}
+              className="bg-blue-600 text-white p-3 rounded-md hover:bg-blue-700"
             >
               {loading && <Loading className="mr-2" />}
               {(isLogin && VARIANTS.login) ||

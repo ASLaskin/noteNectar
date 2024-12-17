@@ -2,7 +2,6 @@
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 
-import { Button } from '@/components/ui/button';
 import useAdminRoute from './hooks/useAdminRoute';
 import Loading from '@/components/ui/Loading';
 
@@ -25,7 +24,7 @@ const AdminPage = () => {
             <img src="images/logo.svg" className="w-10" alt="logo" />
           </div>
           <div className="flex items-center space-x-3 md:order-2 md:space-x-0 rtl:space-x-reverse">
-            <Button onClick={() => signOut()}>Logout</Button>
+            <button onClick={() => signOut()}>Logout</button>
           </div>
           <div
             className="hidden w-full items-center justify-between md:order-1 md:flex md:w-auto"

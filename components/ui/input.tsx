@@ -43,19 +43,19 @@ const Input: React.FC<InputProps> = ({
           px-6 
           pb-1 
           pt-6 
-          text-gray-900
-          placeholder-gray-600
+          text-white
+          placeholder-gray-400
           shadow-sm  
           ring-1 
           ring-inset
-          ring-gray-300 
+          ring-gray-600 
           transition
           focus:ring-2
           focus:ring-inset
           focus:ring-sky-600
           `,
           errors[id] && 'ring-rose-500',
-          disabled && 'cursor-default disabled:bg-gray-100',
+          disabled && 'cursor-default disabled:bg-gray-600',
         )}
         placeholder=" "
       />
@@ -63,7 +63,7 @@ const Input: React.FC<InputProps> = ({
         htmlFor={id}
         className="
         text-md
-        text-zinc-150 
+        text-gray-400 
         peer-placeholder-shown:scale:100 
         absolute  
         left-6 top-4 z-10 origin-[0] 
