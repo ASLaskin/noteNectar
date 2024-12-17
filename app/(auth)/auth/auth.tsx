@@ -35,6 +35,21 @@ const Auth = () => {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
 
+  const initialVariant = searchParams.get('variant') === 'register' 
+  ? VARIANTS.register 
+  : VARIANTS.login;
+
+  useEffect(() => {
+    const currentVariant = searchParams.get('variant');
+    if (currentVariant === 'register') {
+      setVariant(VARIANTS.register);
+    } else if (currentVariant === 'reset') {
+      setVariant(VARIANTS.reset);
+    } else {
+      setVariant(VARIANTS.login);
+    }
+  }, [searchParams]);
+
   const {
     register,
     handleSubmit,

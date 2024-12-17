@@ -18,7 +18,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={inter.className}>
       <body className='bg-black'>
         <AuthContext>
-          <Header/>
           {children}
         </AuthContext>
       </body>

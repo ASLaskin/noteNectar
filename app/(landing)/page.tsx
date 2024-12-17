@@ -6,6 +6,7 @@ import DotPattern from "@/components/magicui/dot-pattern";
 import { cn } from "@/lib/utils";
 import BlurIn from "@/components/magicui/blur-in";
 import AnimatedImage from '@/components/AnimatedImage';
+import Header from '@/components/header';
 
 const MotionDiv = motion.div;
 
@@ -34,7 +35,7 @@ const itemVariants = {
 export default function Home() {
   return (
     <main>
-
+      <Header/>
       <div className="z-0 relative min-h-screen w-full pb-40 overflow-hidden bg-[radial-gradient(97.14%_56.45%_at_51.63%_0%,_#7D56F4_0%,_#4517D7_30%,_#000_100%)]">
         <DotPattern className={cn(
           "[mask-image:radial-gradient(50vw_circle_at_center,white,transparent)]",

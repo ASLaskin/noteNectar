@@ -80,12 +80,12 @@ const Header = () => {
           </>
         ) : (
           <>
-            <Link href="/login">
+            <Link href="/auth?variant=login">
               <button className="px-4 py-2 rounded-md text-white bg-white/10 hover:bg-white/20 transition duration-300">
                 Login
               </button>
             </Link>
-            <Link href="/signup">
+            <Link href="/auth?variant=register">
               <button className="px-4 py-2 rounded-md text-white border border-white/30 hover:bg-white/20 transition duration-300">
                 Sign Up
               </button>
