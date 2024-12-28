@@ -3,6 +3,7 @@
 import { useState } from "react";
 import UploadForm from "@/components/uploadForm";
 import { useRouter } from "next/navigation";
+import { exampleNotes } from "../utils/notes";
 
 const CreatePage: React.FC = () => {
   const [extractedText, setExtractedText] = useState<string>("");
@@ -13,29 +14,34 @@ const CreatePage: React.FC = () => {
   const handleExtractedText = async (text: string) => {
     setLoading(true);
     try {
-      const response = await fetch("/api/summary", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text }),
-      });
+      //WORKING VERSION OF API CALL CURRENTLY HARDCODED TO AVOID API USAGE
 
-      if (!response.body) {
-        throw new Error("No response body");
-      }
+      // const response = await fetch("/api/summary", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify({ text }),
+      // });
 
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-      let result = "";
+      // if (!response.body) {
+      //   throw new Error("No response body");
+      // }
 
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
+      // const reader = response.body.getReader();
+      // const decoder = new TextDecoder();
+      // let result = "";
 
-        result += decoder.decode(value, { stream: true });
-        setGeneratedNotes((prev) => prev + decoder.decode(value, { stream: true }));
-      }
+      // while (true) {
+      //   const { done, value } = await reader.read();
+      //   if (done) break;
 
-      router.push(`/edit?notes=${encodeURIComponent(result)}`);
+      //   result += decoder.decode(value, { stream: true });
+      //   setGeneratedNotes((prev) => prev + decoder.decode(value, { stream: true }));
+      // }
+
+      // router.push(`/edit?notes=${encodeURIComponent(result)}`);
+
+      router.push(`/edit?notes=${encodeURIComponent(exampleNotes)}`);
+
     } catch (error) {
       console.error("Error fetching notes:", error);
     } finally {
