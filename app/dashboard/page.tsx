@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Download, Trash2, MoreHorizontal, User, LogOut } from 'lucide-react';
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { User, LogOut } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,15 +11,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { motion } from 'framer-motion';
-
-const notes = [
-  { id: 1, name: 'Example note', date: '12/7/2024' },
-  { id: 2, name: 'Meeting minutes', date: '12/8/2024' },
-  { id: 3, name: 'Project ideas', date: '12/9/2024' },
-];
-
+} from "@/components/ui/dropdown-menu";
+import { motion } from "framer-motion";
+import Notes from "./components/notes";
 
 export default function Dashboard() {
   return (
@@ -93,42 +87,8 @@ export default function Dashboard() {
               Stored Notes
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-[1fr,auto,auto,auto,auto] gap-4 font-semibold mb-2 text-white/80">
-              <div>Name</div>
-              <div>Date</div>
-              <div className="col-span-3">Actions</div>
-            </div>
-            {notes.map((note) => (
-              <motion.div
-                key={note.id}
-                whileHover={{ scale: 1.02 }}
-                transition={{ type: "spring", stiffness: 200 }}
-                className="grid grid-cols-[1fr,auto,auto,auto,auto] gap-4 py-2 border-t border-white/10 items-center"
-              >
-                <div className="text-white">{note.name}</div>
-                <div className="text-white/60">{note.date}</div>
-                <Button size="icon" variant="ghost" className="hover:text-[#FACC15]">
-                  <Download className="h-4 w-4" />
-                </Button>
-                <Button size="icon" variant="ghost" className="hover:text-red-500">
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button size="icon" variant="ghost" className="hover:text-white/90">
-                      <MoreHorizontal className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem>Rename</DropdownMenuItem>
-                    <DropdownMenuItem>Move</DropdownMenuItem>
-                    <DropdownMenuItem>Share</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </motion.div>
-            ))}
-          </CardContent>
+          {/* Notes Component */}
+          <Notes />
         </Card>
       </main>
     </div>
