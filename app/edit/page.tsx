@@ -16,11 +16,12 @@ const EditPage: React.FC = () => {
     const userId = session?.user?.id;
 
     try {
+      setSaving(true);
       const response = await fetch("/api/documents/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          userId, 
+          userId,
           title,
           content: editableNotes,
         }),
@@ -31,8 +32,26 @@ const EditPage: React.FC = () => {
         throw new Error(errorData.message || "Failed to save the document");
       }
 
+      //need to change ID to match with database document id 
+      const savedDocument = {
+        id: `${Date.now()}`,
+        title,
+        content: editableNotes,
+        createdAt: new Date().toISOString(),
+      };
+
+      const existingDocuments = JSON.parse(localStorage.getItem(`notes_${userId}`) || "[]");
+      localStorage.setItem(
+        `notes_${userId}`,
+        JSON.stringify([savedDocument, ...existingDocuments])
+      );
+
+      console.log("Document saved and added to localStorage");
+
     } catch (error) {
       console.error("Error saving document:", error);
+    } finally {
+      setSaving(false);
     }
   };
 

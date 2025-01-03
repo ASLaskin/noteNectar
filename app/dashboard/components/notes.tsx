@@ -14,44 +14,54 @@ import { useSession } from "next-auth/react";
 
 type Note = {
   id: string;
-  name: string;
+  title: string;
   createdAt: string;
 };
 
 export default function Notes() {
   const { data: session } = useSession();
   const [notes, setNotes] = useState<Note[]>([]);
- 
+  const [isFetching, setIsFetching] = useState(true);
 
   useEffect(() => {
     const userId = session?.user?.id;
     const fetchNotes = async () => {
-      console.log("User ID is: ", userId)
-  
       if (!userId) {
         console.error("User ID is missing.");
         return;
       }
-  
+      const cachedNotes = localStorage.getItem(`notes_${userId}`);
+      if (cachedNotes) {
+        setNotes(JSON.parse(cachedNotes));
+        setIsFetching(false);
+        return;
+      }
+
       try {
         const response = await fetch(`/api/documents/getByUser?userId=${userId}`, {
           method: "GET",
         });
-  
+
         if (!response.ok) {
           throw new Error("Failed to fetch notes");
         }
-  
+
         const data: Note[] = await response.json();
         setNotes(data);
+        localStorage.setItem(`notes_${userId}`, JSON.stringify(data)); 
       } catch (error) {
         console.error("Error fetching notes:", error);
+      } finally {
+        setIsFetching(false);
       }
     };
-  
+
     fetchNotes();
-  }, []); 
-  
+  }, [session?.user?.id]);
+
+  if (isFetching) {
+    return <p className="text-white/60">Loading notes...</p>;
+  }
 
   if (notes.length === 0) {
     return <p className="text-white/60">No notes available.</p>;
@@ -66,7 +76,7 @@ export default function Notes() {
           transition={{ type: "spring", stiffness: 200 }}
           className="grid grid-cols-[1fr,auto,auto,auto,auto] gap-4 py-2 border-t border-white/10 items-center"
         >
-          <div className="text-white">{note.name}</div>
+          <div className="text-white">{note.title}</div>
           <div className="text-white/60">{new Date(note.createdAt).toLocaleDateString()}</div>
           <Button size="icon" variant="ghost" className="hover:text-[#FACC15]">
             <Download className="h-4 w-4" />
