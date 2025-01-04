@@ -61,6 +61,9 @@ const EditPage: React.FC = () => {
         <div className="bg-indigo-600 dark:bg-indigo-800 text-white p-6 rounded-t-lg">
           <h1 className="text-3xl font-semibold">Edit Notes</h1>
         </div>
+        <div className="bg-indigo-600 dark:bg-indigo-800 text-white p-6 rounded-t-lg">
+          <h1 className="text-3xl font-semibold">{title}</h1>
+        </div>
         <div className="p-6">
           <textarea
             value={editableNotes}
@@ -70,9 +73,8 @@ const EditPage: React.FC = () => {
           <button
             onClick={handleSave}
             disabled={saving}
-            className={`mt-4 px-6 py-2 rounded-lg ${
-              saving ? "bg-gray-400" : "bg-indigo-600 hover:bg-indigo-700"
-            } text-white`}
+            className={`mt-4 px-6 py-2 rounded-lg ${saving ? "bg-gray-400" : "bg-indigo-600 hover:bg-indigo-700"
+              } text-white`}
           >
             {saving ? "Saving..." : "Save Document"}
           </button>

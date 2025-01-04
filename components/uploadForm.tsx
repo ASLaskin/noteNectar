@@ -3,9 +3,10 @@ import { extractTextFromPDF } from '@/app/utils/pdfParser';
 
 interface UploadFormProps {
   onExtractedText: (text: string) => void;
+  onTitle: (text: string) => void;
 }
 
-const UploadForm: React.FC<UploadFormProps> = ({ onExtractedText }) => {
+const UploadForm: React.FC<UploadFormProps> = ({ onExtractedText, onTitle }) => {
   const [file, setFile] = useState<File | null>(null);
   const [title, setTitle] = useState<string>('');
   const [uploading, setUploading] = useState<boolean>(false);
@@ -16,13 +17,11 @@ const UploadForm: React.FC<UploadFormProps> = ({ onExtractedText }) => {
       setError('Please select a file and provide a title.');
       return;
     }
-  
     try {
       setUploading(true);
       setError(null);
-  
       const extractedText = await extractTextFromPDF(file);
-  
+      onTitle(title);
       onExtractedText(extractedText);
     } catch (error) {
       console.error('Error extracting text from file:', error);
@@ -43,6 +42,11 @@ const UploadForm: React.FC<UploadFormProps> = ({ onExtractedText }) => {
       setFile(uploadedFile);
     }
   };
+  const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const newTitle = e.target.value;
+    setTitle(newTitle);
+    onTitle(newTitle); 
+  };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -55,7 +59,7 @@ const UploadForm: React.FC<UploadFormProps> = ({ onExtractedText }) => {
       <input
         type="text"
         value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        onChange={handleTitleChange}
         placeholder="Document Title"
         className="p-2 border rounded"
       />

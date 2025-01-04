@@ -9,6 +9,7 @@ const CreatePage: React.FC = () => {
   const [extractedText, setExtractedText] = useState<string>("");
   const [generatedNotes, setGeneratedNotes] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [title, setTitle] =  useState<string>("");
   const router = useRouter();
 
   const handleExtractedText = async (text: string) => {
@@ -40,7 +41,7 @@ const CreatePage: React.FC = () => {
 
       // router.push(`/edit?notes=${encodeURIComponent(result)}`);
 
-      router.push(`/edit?notes=${encodeURIComponent(exampleNotes)}`);
+      router.push(`/edit?notes=${encodeURIComponent(exampleNotes)}&title=${encodeURIComponent(title)}`);
 
     } catch (error) {
       console.error("Error fetching notes:", error);
@@ -56,7 +57,7 @@ const CreatePage: React.FC = () => {
           <h1 className="text-3xl font-semibold">Create New Document</h1>
         </div>
         <div className="p-6">
-          <UploadForm onExtractedText={handleExtractedText} />
+        <UploadForm onExtractedText={handleExtractedText} onTitle={setTitle} />
           {loading && (
             <p className="text-sm text-gray-700 dark:text-gray-300">Generating summary...</p>
           )}
