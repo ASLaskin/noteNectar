@@ -11,10 +11,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
 
 type Note = {
   id: string;
   title: string;
+  content: string;
   createdAt: string;
 };
 
@@ -22,6 +25,7 @@ export default function Notes() {
   const { data: session } = useSession();
   const [notes, setNotes] = useState<Note[]>([]);
   const [isFetching, setIsFetching] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const userId = session?.user?.id;
@@ -67,6 +71,10 @@ export default function Notes() {
     return <p className="text-white/60">No notes available.</p>;
   }
 
+  const handleNoteClick = (note: Note) => {
+    router.push(`/edit?notes=${encodeURIComponent(note.content)}&title=${encodeURIComponent(note.title)}`);
+  };
+
   return (
     <div>
       {notes.map((note) => (
@@ -76,7 +84,12 @@ export default function Notes() {
           transition={{ type: "spring", stiffness: 200 }}
           className="grid grid-cols-[1fr,auto,auto,auto,auto] gap-4 py-2 border-t border-white/10 items-center"
         >
-          <div className="text-white">{note.title}</div>
+                 <a
+          onClick={() => handleNoteClick(note)} 
+          className="text-white cursor-pointer"
+        >
+          {note.title}
+        </a>
           <div className="text-white/60">{new Date(note.createdAt).toLocaleDateString()}</div>
           <Button size="icon" variant="ghost" className="hover:text-[#FACC15]">
             <Download className="h-4 w-4" />
