@@ -13,7 +13,6 @@ import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-
 type Note = {
   id: string;
   title: string;
@@ -52,7 +51,7 @@ export default function Notes() {
 
         const data: Note[] = await response.json();
         setNotes(data);
-        localStorage.setItem(`notes_${userId}`, JSON.stringify(data)); 
+        localStorage.setItem(`notes_${userId}`, JSON.stringify(data));
       } catch (error) {
         console.error("Error fetching notes:", error);
       } finally {
@@ -62,6 +61,39 @@ export default function Notes() {
 
     fetchNotes();
   }, [session?.user?.id]);
+
+  const handleDelete = async (noteId: string) => {
+    const userId = session?.user?.id;
+    if (!userId) {
+      console.error("User ID is missing.");
+      return;
+    }
+  
+    console.log(`Deleting note with ID: ${noteId}`);
+  
+    try {
+      const response = await fetch(`/api/documents/delete`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: noteId }),
+      });
+  
+      if (!response.ok) {
+        const error = await response.json();
+        console.error("Delete API error:", error.message);
+        throw new Error(error.message || "Failed to delete the note");
+      }
+  
+      console.log(`Note with ID: ${noteId} deleted successfully`);
+  
+      const updatedNotes = notes.filter((note) => note.id !== noteId);
+      setNotes(updatedNotes);
+      localStorage.setItem(`notes_${userId}`, JSON.stringify(updatedNotes));
+    } catch (error) {
+      console.error("Error deleting note:", error);
+    }
+  };
+  
 
   if (isFetching) {
     return <p className="text-white/60">Loading notes...</p>;
@@ -84,17 +116,22 @@ export default function Notes() {
           transition={{ type: "spring", stiffness: 200 }}
           className="grid grid-cols-[1fr,auto,auto,auto,auto] gap-4 py-2 border-t border-white/10 items-center"
         >
-                 <a
-          onClick={() => handleNoteClick(note)} 
-          className="text-white cursor-pointer"
-        >
-          {note.title}
-        </a>
+          <a
+            onClick={() => handleNoteClick(note)}
+            className="text-white cursor-pointer"
+          >
+            {note.title}
+          </a>
           <div className="text-white/60">{new Date(note.createdAt).toLocaleDateString()}</div>
           <Button size="icon" variant="ghost" className="hover:text-[#FACC15]">
             <Download className="h-4 w-4" />
           </Button>
-          <Button size="icon" variant="ghost" className="hover:text-red-500">
+          <Button
+            size="icon"
+            variant="ghost"
+            className="hover:text-red-500"
+            onClick={() => handleDelete(note.id)}
+          >
             <Trash2 className="h-4 w-4" />
           </Button>
           <DropdownMenu>
