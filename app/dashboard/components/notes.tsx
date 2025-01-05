@@ -63,19 +63,15 @@ export default function Notes() {
   }, [session?.user?.id]);
 
   const handleDelete = async (noteId: string) => {
-    const userId = session?.user?.id;
-    if (!userId) {
-      console.error("User ID is missing.");
-      return;
-    }
-  
-    console.log(`Deleting note with ID: ${noteId}`);
+    console.log("Sending noteId:", noteId);
   
     try {
+      const body = JSON.stringify({ noteId });
+  
       const response = await fetch(`/api/documents/delete`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: noteId }),
+        body,
       });
   
       if (!response.ok) {
@@ -85,10 +81,6 @@ export default function Notes() {
       }
   
       console.log(`Note with ID: ${noteId} deleted successfully`);
-  
-      const updatedNotes = notes.filter((note) => note.id !== noteId);
-      setNotes(updatedNotes);
-      localStorage.setItem(`notes_${userId}`, JSON.stringify(updatedNotes));
     } catch (error) {
       console.error("Error deleting note:", error);
     }

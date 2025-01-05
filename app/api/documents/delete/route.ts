@@ -3,20 +3,25 @@ import { NextResponse } from 'next/server';
 
 export async function DELETE(request: Request) {
   try {
-    const { noteId } = await request.json();
+    const json = await request.json();
 
-    if (!noteId) {
+    const { id } = json;    
+    console.log("Received id:", id);
+
+    if (!id) {
+      console.log("note doesn't exist");
       return NextResponse.json(
-        { message: 'Missing required field: noteId' },
+        { message: 'Missing required field: id' },
         { status: 400 }
       );
     }
 
     const deletedDocument = await prisma.document.delete({
       where: {
-        id: noteId,
+        id: id,
       },
     });
+    console.log("Deleted successfully");
 
     return NextResponse.json(
       { message: 'Note deleted successfully', deletedDocument },
