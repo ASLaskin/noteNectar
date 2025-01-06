@@ -10,9 +10,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { User } from 'lucide-react'
+import { signOut } from 'next-auth/react';
 
 const Header = () => {
   const session = useIsLoggedIn();
+
+  const handleLogout = () => {
+    signOut({
+      redirect: true, 
+      callbackUrl: '/',
+    });
+  };
 
   return (
     <header className="absolute top-0 left-0 w-full py-4 px-6 flex items-center justify-between bg-transparent backdrop-blur-lg z-50">
@@ -72,7 +80,7 @@ const Header = () => {
                 <DropdownMenuItem asChild>
                   <Link href="/account">My Account</Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={handleLogout}>
                   Sign Out
                 </DropdownMenuItem>
               </DropdownMenuContent>

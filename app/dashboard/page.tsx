@@ -14,8 +14,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { motion } from "framer-motion";
 import Notes from "./components/notes";
+import { signOut } from 'next-auth/react';
 
 export default function Dashboard() {
+  const handleLogout = () => {
+    signOut({
+      redirect: true,
+      callbackUrl: '/', 
+    });
+  };
+
   return (
     <div className="relative min-h-screen bg-[radial-gradient(circle_at_top,rgba(125,86,244,0.8)_10%,rgba(69,23,215,0.9)_40%,#000_90%)] text-white">
       {/* Header */}
@@ -48,7 +56,7 @@ export default function Dashboard() {
                 <User className="mr-2 h-4 w-4" />
                 <span>Profile</span>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={handleLogout}>
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>Log out</span>
               </DropdownMenuItem>
