@@ -38,6 +38,7 @@ model User {
   updatedAt DateTime @updatedAt
   accounts Account[]
   documents Document[]
+  credits Int @default(1)
 }
 
 model Account {

@@ -1,15 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
+import prisma from "@/app/libs/prismaDb";
 
 const openai = new OpenAI();
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const text = body.text;
+    const { text, userId } = body;
 
-    if (!text) {
-      return NextResponse.json({ message: "Text is required" }, { status: 400 });
+    if (!text || !userId) {
+      return NextResponse.json({ message: "Text and userId are required" }, { status: 400 });
+    }
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+
+    if (!user) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    }
+
+    if (user.credits < 1) {
+      return NextResponse.json({ message: "Insufficient credits" }, { status: 403 });
     }
 
     const stream = await openai.chat.completions.create({
@@ -37,6 +47,11 @@ export async function POST(req: NextRequest) {
           controller.error(error); 
         });
       },
+    });
+
+    await prisma.user.update({
+      where: { id: userId },
+      data: { credits: user.credits - 1 },
     });
 
     return new NextResponse(readableStream, {

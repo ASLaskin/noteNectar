@@ -33,6 +33,7 @@ export async function POST(request: Request) {
         hashedPassword,
         resetToken: token,
         resetTokenExpiry: tokenExpiration,
+        credits: 1, 
       },
     });
 

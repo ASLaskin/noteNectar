@@ -4,6 +4,7 @@ import { useState } from "react";
 import UploadForm from "@/components/uploadForm";
 import { useRouter } from "next/navigation";
 import { exampleNotes } from "../utils/notes";
+import { useSession } from "next-auth/react";
 
 const CreatePage: React.FC = () => {
   const [extractedText, setExtractedText] = useState<string>("");
@@ -11,37 +12,47 @@ const CreatePage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [title, setTitle] =  useState<string>("");
   const router = useRouter();
+  const { data: session } = useSession();
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const handleExtractedText = async (text: string) => {
+    const userId = session?.user?.id;
+
     setLoading(true);
+    setErrorMessage("");
     try {
       //WORKING VERSION OF API CALL CURRENTLY HARDCODED TO AVOID API USAGE
 
-      // const response = await fetch("/api/summary", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({ text }),
-      // });
+      const response = await fetch("/api/summary", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text, userId }),
+      });
 
-      // if (!response.body) {
-      //   throw new Error("No response body");
-      // }
+      if (response.status === 403) {
+        setErrorMessage("You have insufficient credits. Please purchase more to generate notes.");
+        return;
+      }
 
-      // const reader = response.body.getReader();
-      // const decoder = new TextDecoder();
-      // let result = "";
+      if (!response.body) {
+        throw new Error("No response body");
+      }
 
-      // while (true) {
-      //   const { done, value } = await reader.read();
-      //   if (done) break;
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let result = "";
 
-      //   result += decoder.decode(value, { stream: true });
-      //   setGeneratedNotes((prev) => prev + decoder.decode(value, { stream: true }));
-      // }
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
 
-      // router.push(`/edit?notes=${encodeURIComponent(result)}`);
+        result += decoder.decode(value, { stream: true });
+        setGeneratedNotes((prev) => prev + decoder.decode(value, { stream: true }));
+      }
 
-      router.push(`/edit?notes=${encodeURIComponent(exampleNotes)}&title=${encodeURIComponent(title)}`);
+      router.push(`/edit?notes=${encodeURIComponent(result)}`);
+
+      // router.push(`/edit?notes=${encodeURIComponent(exampleNotes)}&title=${encodeURIComponent(title)}`);
 
     } catch (error) {
       console.error("Error fetching notes:", error);
@@ -61,23 +72,10 @@ const CreatePage: React.FC = () => {
           {loading && (
             <p className="text-sm text-gray-700 dark:text-gray-300">Generating summary...</p>
           )}
-          {extractedText && (
-            <div className="mt-6 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
-              <h2 className="text-lg font-semibold">Extracted Text:</h2>
-              <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">
-                {extractedText}
-              </p>
-            </div>
-          )}
-          {generatedNotes && !loading && (
-            <div className="mt-6 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
-              <h2 className="text-lg font-semibold">Generated Summary:</h2>
-              <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">
-                {generatedNotes}
-              </p>
-            </div>
-          )}
         </div>
+        {errorMessage && (
+            <p className="text-sm text-red-500 mt-4">{errorMessage}</p>
+        )}
       </div>
     </div>
   );

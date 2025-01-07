@@ -45,10 +45,10 @@ const UploadForm: React.FC<UploadFormProps> = ({ onExtractedText, onTitle }) => 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newTitle = e.target.value;
     setTitle(newTitle);
-    onTitle(newTitle); 
+    onTitle(newTitle);
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     uploadFile();
   };
@@ -63,8 +63,7 @@ const UploadForm: React.FC<UploadFormProps> = ({ onExtractedText, onTitle }) => 
         placeholder="Document Title"
         className="p-2 border rounded"
       />
-      <input type="file" accept="application/pdf" className='text-white' onChange={handleFileChange} />
-
+      <input type="file" accept="application/pdf" className="text-white" onChange={handleFileChange} />
       <button
         type="submit"
         disabled={!file || !title || uploading}
@@ -72,6 +71,11 @@ const UploadForm: React.FC<UploadFormProps> = ({ onExtractedText, onTitle }) => 
       >
         {uploading ? 'Uploading...' : 'Upload PDF'}
       </button>
+      {/* {!validCreds && (
+        <p className="text-red-500 text-sm">
+          You do not have enough credits to perform this action.
+        </p>
+      )} */}
     </form>
   );
 };
