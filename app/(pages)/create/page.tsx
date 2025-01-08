@@ -3,7 +3,7 @@
 import { useState } from "react";
 import UploadForm from "@/components/uploadForm";
 import { useRouter } from "next/navigation";
-import { exampleNotes } from "../utils/notes";
+import { exampleNotes } from "../../utils/notes";
 import { useSession } from "next-auth/react";
 
 const CreatePage: React.FC = () => {
