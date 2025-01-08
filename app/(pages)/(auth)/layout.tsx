@@ -3,14 +3,14 @@ import Logo from './auth/components/Logo';
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="w-full overflow-hidden">
-      <div className="m-auto h-screen 2xl:container">
-        <div className="relative ml-auto flex h-full  lg:w-6/12 ">
-          <div className="m-auto px-6 py-12 sm:p-20 xl:w-10/12">
-            <Logo />
-            {children}
-            <BottomText />
-          </div>
+    <div className="flex h-screen w-full bg-gray-50">
+      <div className="m-auto flex w-full max-w-lg flex-col items-center rounded-lg bg-white px-8 py-7 shadow-lg sm:px-12">
+        <div className="mb-8">
+          <Logo />
+        </div>
+        <div className="w-full">{children}</div>
+        <div className="mt-8 w-full text-center">
+          <BottomText />
         </div>
       </div>
     </div>

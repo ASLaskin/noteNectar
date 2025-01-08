@@ -116,122 +116,122 @@ const Auth = () => {
   };
 
   return (
-    <div className="bg-black text-white">
-      <motion.div initial={{ opacity: 1, x: 0 }} animate={controls}>
-        <FadeIn delay={0.2} direction="left">
-          <SocialLogin />
-        </FadeIn>
-        <FadeIn delay={0.4} direction="left">
-          <Divider />
-        </FadeIn>
+    <div className=" flex items-center justify-center">
+    <motion.div
+      initial={{ opacity: 1, x: 0 }}
+      animate={controls}
+      className="w-full max-w-lg bg-white shadow-md rounded-lg p-6 md:p-8"
+    >
+      <h2 className="text-center text-2xl font-semibold text-gray-800 mb-6">
+        {isLogin && "Welcome Back"}
+        {isRegister && "Create an Account"}
+        {isReset && "Reset Your Password"}
+      </h2>
 
-        <form action="" onSubmit={handleSubmit(onSubmit)} className="py-6">
-          <FadeIn delay={0.8} direction="left">
-            {isRegister && (
-              <Input
-                label="Name"
-                register={register}
-                id="name"
-                type="text"
-                errors={errors}
-                className="mb-6"
-                validation={nameValidation}
+      <FadeIn delay={0.2} direction="up">
+        <SocialLogin />
+      </FadeIn>
+      <FadeIn delay={0.4} direction="up">
+        <Divider />
+      </FadeIn>
+
+      <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-4">
+        {isRegister && (
+          <Input
+            label="Name"
+            register={register}
+            id="name"
+            type="text"
+            errors={errors}
+            validation={nameValidation}
+          />
+        )}
+
+        <Input
+          label="Email"
+          register={register}
+          id="email"
+          type="email"
+          errors={errors}
+        />
+
+        {showMessage && (
+          <div
+            className={`text-sm ${
+              showMessage.type === "error" ? "text-red-500" : "text-green-500"
+            }`}
+          >
+            {showMessage.message}
+          </div>
+        )}
+
+        {!isReset && (
+          <div className="relative">
+            <Input
+              label="Password"
+              register={register}
+              id="password"
+              type={showPassword ? "text" : "password"}
+              errors={errors}
+              validation={isRegister ? passwordValidation : {}}
+            />
+            {showPassword ? (
+              <FaEyeSlash
+                className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500 cursor-pointer"
+                onClick={() => setShowPassword(false)}
+              />
+            ) : (
+              <FaEye
+                className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500 cursor-pointer"
+                onClick={() => setShowPassword(true)}
               />
             )}
+          </div>
+        )}
 
-            <Input
-              label="Email"
-              register={register}
-              id="email"
-              type="email"
-              className={`${showMessage ? '' : 'mb-6'}`}
-              errors={errors}
-            />
-
-            {showMessage && (
-              <div
-                className={`mb-6 mt-1 text-xs leading-3 ${
-                  showMessage.type === 'error' ? 'text-rose-500' : 'text-lime-600'
-                }`}
-              >
-                {showMessage?.message}
-              </div>
-            )}
-
-            {!isReset && (
-              <div className="relative flex flex-col items-end">
-                <Input
-                  label="Password"
-                  register={register}
-                  type={showPassword ? 'text' : 'password'}
-                  id="password"
-                  errors={errors}
-                  validation={isRegister ? passwordValidation : {}}
-                />
-
-                <div>
-                  {!showPassword ? (
-                    <FaEye
-                      className="absolute right-2 top-5 cursor-pointer"
-                      onClick={() => setShowPassword(true)}
-                    />
-                  ) : (
-                    <FaEyeSlash
-                      className="absolute right-2 top-5 cursor-pointer"
-                      onClick={() => setShowPassword(false)}
-                    />
-                  )}
-                </div>
-
-                {isRegister && (
-                  <p className="ml-2 mt-2 text-xs text-gray-500">
-                    Your password must be at least 8 characters long and include a mix of upper and
-                    lower case letters, numbers, and special characters.
-                  </p>
-                )}
-
-                <span
-                  className="-mr-3 w-max cursor-pointer p-3"
-                  onClick={() => changeVariant(VARIANTS.reset)}
-                >
-                  <span className="text-sm tracking-wide text-blue-600">Forgot password ?</span>
-                </span>
-              </div>
-            )}
-          </FadeIn>
-
-          <FadeIn delay={0.8} direction="left">
-            <button
-              type="submit"
-              disabled={loading || showMessage?.type === 'success'}
-              className="bg-blue-600 text-white p-3 rounded-md hover:bg-blue-700"
-            >
-              {loading && <Loading className="mr-2" />}
-              {(isLogin && VARIANTS.login) ||
-                (isRegister && VARIANTS.register) ||
-                (isReset && VARIANTS.reset)}
-            </button>
-            <div className="-ml-3 w-max p-3">
-              <span
-                onClick={() => changeVariant(isLogin ? VARIANTS.register : VARIANTS.login)}
-                className="cursor-pointer text-sm tracking-wide text-blue-600"
-              >
-                {isLogin ? 'Create new account' : 'Login to your account'}
-              </span>
-            </div>
-          </FadeIn>
-          {bottomMessage && (
-            <div
-              className={`text-sm leading-3 ${
-                bottomMessage?.type === 'error' ? 'text-rose-500' : 'text-lime-600'
-              }`}
-            >
-              {bottomMessage.message}
-            </div>
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+        >
+          {loading ? (
+            <Loading className="mr-2" />
+          ) : isLogin ? (
+            "Login"
+          ) : isRegister ? (
+            "Sign Up"
+          ) : (
+            "Reset Password"
           )}
-        </form>
-      </motion.div>
-    </div>
+        </button>
+      </form>
+
+      <div className="mt-4 text-center">
+        {isLogin && (
+          <span className="text-sm text-gray-600">
+            Don’t have an account?{" "}
+            <span
+              onClick={() => changeVariant(VARIANTS.register)}
+              className="text-blue-600 cursor-pointer hover:underline"
+            >
+              Sign Up
+            </span>
+          </span>
+        )}
+        {isRegister && (
+          <span className="text-sm text-gray-600">
+            Already have an account?{" "}
+            <span
+              onClick={() => changeVariant(VARIANTS.login)}
+              className="text-blue-600 cursor-pointer hover:underline"
+            >
+              Login
+            </span>
+          </span>
+        )}
+      </div>
+    </motion.div>
+  </div>
   );
 };
 

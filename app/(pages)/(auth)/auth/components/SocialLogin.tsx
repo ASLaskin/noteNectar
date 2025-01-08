@@ -9,30 +9,25 @@ const SocialLogin = () => {
   const { loadingGoogle, loadingFacebook, socialActions } = useAuth();
 
   return (
-    <div className="mt-12 grid gap-6 sm:grid-cols-2">
-      <button className="rounded-xl bg-blue-50 px-6 py-3 hover:bg-blue-100 focus:bg-blue-100 active:bg-blue-200">
-        <div className="flex justify-center" onClick={() => socialActions('google')}>
-          {loadingGoogle ? <Loading className="mr-2" /> : <FcGoogle size={20} className="mr-2" />}
-          <span className="block w-max text-sm font-medium tracking-wide text-blue-700">
-            Google
-          </span>
-        </div>
+    <div className="mt-8 grid gap-4 sm:grid-cols-2">
+      <button
+        className="flex items-center justify-center rounded-lg bg-blue-50 px-4 py-2 text-sm font-medium text-blue-700 transition hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-200"
+        onClick={() => socialActions('google')}
+      >
+        {loadingGoogle ? <Loading className="mr-2" /> : <FcGoogle size={20} className="mr-2" />}
+        Continue with Google
       </button>
 
-      <button className="rounded-xl border border-gray-200 bg-white px-6 py-3 transition hover:bg-blue-100 focus:bg-blue-100 active:bg-blue-100">
-        <div
-          className="flex items-center justify-center text-blue-600"
-          onClick={() => socialActions('facebook')}
-        >
-          {loadingFacebook ? (
-            <Loading />
-          ) : (
-            <FaFacebook className="mr-2" size={20} color="#1877F2" />
-          )}
-          <span className="block w-max text-sm font-medium tracking-wide text-blue-600">
-            Facebook
-          </span>
-        </div>
+      <button
+        className="flex items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-blue-600 transition hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-200"
+        onClick={() => socialActions('facebook')}
+      >
+        {loadingFacebook ? (
+          <Loading />
+        ) : (
+          <FaFacebook className="mr-2" size={20} color="#1877F2" />
+        )}
+        Continue with Facebook
       </button>
     </div>
   );

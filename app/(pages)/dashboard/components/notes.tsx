@@ -88,11 +88,11 @@ export default function Notes() {
   
 
   if (isFetching) {
-    return <p className="text-white/60">Loading notes...</p>;
+    return <p className="flex align-center justify-center text-black/60">Loading notes...</p>;
   }
 
   if (notes.length === 0) {
-    return <p className="text-white/60">No notes available.</p>;
+    return <p className="flex align-center justify-center text-black/60">No notes available.</p>;
   }
 
   const handleNoteClick = (note: Note) => {
@@ -100,35 +100,39 @@ export default function Notes() {
   };
 
   return (
-    <div>
+    <div className="space-y-4">
       {notes.map((note) => (
         <motion.div
           key={note.id}
           whileHover={{ scale: 1.02 }}
           transition={{ type: "spring", stiffness: 200 }}
-          className="grid grid-cols-[1fr,auto,auto,auto,auto] gap-4 py-2 border-t border-white/10 items-center"
+          className="grid grid-cols-1 md:grid-cols-[1fr,auto,auto,auto,auto] gap-4 py-4 px-6 border-b border-white/10 items-center hover:bg-gray-800/30 rounded-md transition"
         >
           <a
             onClick={() => handleNoteClick(note)}
-            className="text-white cursor-pointer"
+            className="text-black text-lg font-semibold cursor-pointer hover:underline"
           >
             {note.title}
           </a>
-          <div className="text-white/60">{new Date(note.createdAt).toLocaleDateString()}</div>
-          <Button size="icon" variant="ghost" className="hover:text-[#FACC15]">
+          <div className="text-black text-sm">{new Date(note.createdAt).toLocaleDateString()}</div>
+          <Button
+            size="icon"
+            variant="ghost"
+            className="hover:text-yellow-400 transition duration-200"
+          >
             <Download className="h-4 w-4" />
           </Button>
           <Button
             size="icon"
             variant="ghost"
-            className="hover:text-red-500"
+            className="hover:text-red-500 transition duration-200"
             onClick={() => handleDelete(note.id)}
           >
             <Trash2 className="h-4 w-4" />
           </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button size="icon" variant="ghost" className="hover:text-white/90">
+              <Button size="icon" variant="ghost" className="hover:text-white/90 transition duration-200">
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
