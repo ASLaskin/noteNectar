@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import React from "react";
 import BlurIn from "@/components/magicui/blur-in";
-import Header from "@/components/header";
+import Header from "@/components/landingheader";
 import AnimatedImage from "@/components/AnimatedImage";
 const MotionDiv = motion.div;
 

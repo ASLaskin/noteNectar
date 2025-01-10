@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import React from "react";
-import Header from "@/components/header";
+import Header from "@/components/landingheader";
 const MotionDiv = motion.div;
 
 const containerVariants = {

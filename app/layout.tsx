@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { AuthContext } from '@/context/AutxContext';
-import  Header from "@/components/header"
+import { Toaster } from 'react-hot-toast';
 
 import './globals.css';
 import { CONFIG } from './config';
@@ -18,6 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={inter.className}>
       <body className='bg-white'>
         <AuthContext>
+          <Toaster position="bottom-right" />
           {children}
         </AuthContext>
       </body>
