@@ -43,6 +43,13 @@ export default function Home() {
           <div className="flex flex-col items-center md:items-start space-y-6 text-left">
             <motion.div variants={itemVariants}>
               <BlurIn
+                word="NoteNectar"
+                className="font-display text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600  max-w-3xl md:max-w-none text-left"
+                duration={1}
+              />
+            </motion.div>
+            <motion.div variants={itemVariants}>
+              <BlurIn
                 word="Make studying easier than ever before."
                 className="font-display text-4xl font-bold text-gray-900 max-w-3xl md:max-w-none text-left"
                 duration={1}
@@ -71,8 +78,8 @@ export default function Home() {
             <AnimatedImage
               src="/images/back.jpg"
               alt="image"
-              width={1200} 
-              height={1200} 
+              width={1200}
+              height={1200}
               className="max-w-full h-auto md:w-[100%]"
             />
           </motion.div>

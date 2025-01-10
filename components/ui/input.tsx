@@ -43,7 +43,7 @@ const Input: React.FC<InputProps> = ({
           px-6 
           pb-1 
           pt-6 
-          text-white
+          text-black
           placeholder-gray-400
           shadow-sm  
           ring-1 

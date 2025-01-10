@@ -15,6 +15,7 @@ import {
 import { motion } from "framer-motion";
 import Notes from "./components/notes";
 import { signOut } from 'next-auth/react';
+import Image from 'next/image';
 
 export default function Dashboard() {
   const handleLogout = () => {
@@ -29,18 +30,8 @@ export default function Dashboard() {
       <header className="border-b border-gray-300">
         <div className="container mx-auto px-4 py-6 flex justify-between items-center">
           <div className="flex items-center">
-            <svg
-              className="h-8 w-8 text-primary"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-            >
-              <path d="M4 1h16c1.1 0 2 .9 2 2v18c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V3c0-1.1.9-2 2-2Z" />
-              <path d="M4 11h16" />
-              <path d="M8 1v22" />
-            </svg>
-            <span className="ml-2 text-2xl font-bold">YourDrive</span>
+            <Image src="./logo.svg" alt='logo' width={60} height={60} />
+            <span className="ml-2 text-2xl font-bold">NoteNectar</span>
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger>
