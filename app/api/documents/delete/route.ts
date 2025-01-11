@@ -5,10 +5,10 @@ export async function DELETE(request: Request) {
   try {
     const json = await request.json();
 
-    const { id } = json;    
-    console.log("Received id:", id);
+    const { noteId } = json;    
+    console.log("Received id:", noteId);
 
-    if (!id) {
+    if (!noteId) {
       console.log("note doesn't exist");
       return NextResponse.json(
         { message: 'Missing required field: id' },
@@ -18,7 +18,7 @@ export async function DELETE(request: Request) {
 
     const deletedDocument = await prisma.document.delete({
       where: {
-        id: id,
+        id: noteId,
       },
     });
     console.log("Deleted successfully");

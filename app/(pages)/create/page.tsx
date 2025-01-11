@@ -53,9 +53,7 @@ const CreatePage: React.FC = () => {
 
       // router.push(`/edit?notes=${encodeURIComponent(result)}`);
 
-
-
-      //router.push(`/edit?notes=${encodeURIComponent(exampleNotes)}&title=${encodeURIComponent(title)}`);
+      router.push(`/edit?notes=${encodeURIComponent(exampleNotes)}&title=${encodeURIComponent(title)}`);
 
     } catch (error) {
       console.error("Error fetching notes:", error);

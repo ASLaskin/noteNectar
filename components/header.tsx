@@ -25,7 +25,7 @@ const Header: React.FC = () => {
         <header className="border-b border-gray-300">
             <div className="container mx-auto px-4 py-6 flex justify-between items-center">
                 <Link href="/" className="flex items-center">
-                    <Image src="./logo.svg" alt="logo" width={60} height={60} />
+                    <Image src="/logo.svg" alt="logo" width={60} height={60} />
                     <span className="ml-2 text-2xl font-bold">NoteNectar</span>
                 </Link>
                 <DropdownMenu>

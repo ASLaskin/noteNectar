@@ -12,6 +12,7 @@ import {
 import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 type Note = {
   id: string;
@@ -64,28 +65,40 @@ export default function Notes() {
 
   const handleDelete = async (noteId: string) => {
     console.log("Sending noteId:", noteId);
-  
+
     try {
       const body = JSON.stringify({ noteId });
-  
+
       const response = await fetch(`/api/documents/delete`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body,
       });
-  
+
       if (!response.ok) {
         const error = await response.json();
         console.error("Delete API error:", error.message);
         throw new Error(error.message || "Failed to delete the note");
       }
-  
+
       console.log(`Note with ID: ${noteId} deleted successfully`);
+
+      setNotes((prevNotes) => {
+        const updatedNotes = prevNotes.filter((note) => note.id !== noteId);
+
+        const userId = session?.user?.id;
+        if (userId) {
+          localStorage.setItem(`notes_${userId}`, JSON.stringify(updatedNotes));
+        }
+        
+        return updatedNotes;
+      });
     } catch (error) {
       console.error("Error deleting note:", error);
     }
   };
-  
+
+
 
   if (isFetching) {
     return <p className="flex align-center justify-center text-black/60">Loading notes...</p>;
