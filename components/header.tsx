@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { User, LogOut } from "lucide-react";
+import { User, LogOut, BookOpen } from "lucide-react";
+
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -37,10 +38,18 @@ const Header: React.FC = () => {
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel>My Account</DropdownMenuLabel>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>
+                        <Link href="/dashboard">
+                        <DropdownMenuItem >
+                            <BookOpen className="mr-2 h-4 w-4" />
+                            <span>Dashboard</span>
+                        </DropdownMenuItem>
+                        </Link>
+                        <Link href="/profile">
+                        <DropdownMenuItem >
                             <User className="mr-2 h-4 w-4" />
                             <span>Profile</span>
                         </DropdownMenuItem>
+                        </Link>
                         <DropdownMenuItem onClick={handleLogout}>
                             <LogOut className="mr-2 h-4 w-4" />
                             <span>Log out</span>

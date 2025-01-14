@@ -65,7 +65,7 @@ export default function Home() {
             </motion.h2>
 
             <motion.div variants={itemVariants}>
-              <button className="px-8 py-3 text-lg font-semibold text-white bg-blue-600 rounded-full shadow-md hover:bg-blue-700 transition duration-300 ease-in-out">
+              <button className="px-8 py-3 text-lg font-semibold text-white bg-indigo-600 rounded-full shadow-md hover:bg-indigo-700 transition duration-300 ease-in-out">
                 Get Started
               </button>
             </motion.div>

@@ -81,7 +81,7 @@ const Header = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="bg-white shadow-lg rounded-md py-2">
                 <DropdownMenuItem asChild>
-                  <Link href="/account" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  <Link href="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                     My Account
                   </Link>
                 </DropdownMenuItem>

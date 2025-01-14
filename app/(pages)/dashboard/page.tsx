@@ -27,7 +27,7 @@ export default function Dashboard() {
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 200 }}
             >
-              <Button className="bg-primary text-white font-semibold shadow-md hover:bg-primary-dark transition">
+              <Button className="bg-primary text-white font-semibold shadow-md hover:bg-primary-dark bg-indigo-600 hover:bg-indigo-700 transition">
                 Create New
               </Button>
             </motion.div>

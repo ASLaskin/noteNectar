@@ -12,7 +12,7 @@ const Logo = () => {
           <Image src={CONFIG.logo} width={60} height={60} alt="logo" />
         </a>
         <p className="text-lg font-medium text-gray-600">
-          Welcome to AUTH <span className="text-sm">Login first!</span>
+          Welcome to NoteNectar Login first!
         </p>
       </div>
     </FadeIn>
