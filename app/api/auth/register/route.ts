@@ -34,6 +34,9 @@ export async function POST(request: Request) {
         resetToken: token,
         resetTokenExpiry: tokenExpiration,
         credits: 1, 
+        plan: "Free Plan", 
+        status: "Active",
+        nextCharge: "n/a", 
       },
     });
 

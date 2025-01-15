@@ -14,7 +14,7 @@ const EditPage: React.FC = () => {
 
   const handleSave = async () => {
     const userId = session?.user?.id;
-    
+
     try {
       setSaving(true);
       const response = await fetch("/api/documents/create", {
@@ -26,30 +26,30 @@ const EditPage: React.FC = () => {
           content: editableNotes,
         }),
       });
-  
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || "Failed to save the document");
       }
-  
+
       const savedDocument = await response.json();
-      
+
       //use the actual _id
       const existingDocuments = JSON.parse(localStorage.getItem(`notes_${userId}`) || "[]");
       const newDocument = {
-        id: savedDocument.id, 
+        id: savedDocument.id,
         title: savedDocument.title,
         content: savedDocument.content,
         createdAt: savedDocument.createdAt,
       };
-  
+
       localStorage.setItem(
         `notes_${userId}`,
         JSON.stringify([newDocument, ...existingDocuments])
       );
-  
+
       console.log("Document saved and synced with localStorage");
-  
+
     } catch (error) {
       console.error("Error saving document:", error);
     } finally {

@@ -1,19 +1,71 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import Header from "@/components/header";
+import { useSession } from "next-auth/react";
+
+interface UserData {
+    credits: number;
+    plan: string;
+    nextCharge: string;
+    status: string;
+}
 
 export default function ProfilePage() {
+    const { data: session } = useSession();
+    const [userData, setUserData] = useState<UserData | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
 
-    //Example Data 
-    const userData = {
-        credits: 120,
-        plan: "Pro Plan",
-        nextCharge: "2025-02-10",
-        subscriptionStatus: "Active",
-    };
+    useEffect(() => {
+        const fetchUserData = async () => {
+            const userId = session?.user?.id;
+            console.log("The User we have: ", userId)
+
+            try {
+                setLoading(true);
+                const response = await fetch(`/api/user-data?userId=${encodeURIComponent(userId)}`);
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch data: ${response.statusText}`);
+                }
+                const data = await response.json();
+                setUserData(data);
+            } catch (err: any) {
+                setError(err.message || "An error occurred while fetching user data.");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUserData();
+    }, []);
+
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+                <p className="text-gray-700">Loading...</p>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+                <p className="text-red-500">{error}</p>
+            </div>
+        );
+    }
+
+    if (!userData) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+                <p className="text-gray-700">No user data found.</p>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -36,8 +88,7 @@ export default function ProfilePage() {
                                 <span className="font-semibold">Plan:</span> {userData.plan}
                             </p>
                             <p>
-                                <span className="font-semibold">Status:</span>{" "}
-                                {userData.subscriptionStatus}
+                                <span className="font-semibold">Status:</span> {userData.status}
                             </p>
                             <p>
                                 <span className="font-semibold">Next Charge:</span>{" "}
