@@ -10,12 +10,11 @@ type ErrorCb = (type: string, data: any) => void;
 export const useAuth = (errorCb?: ErrorCb) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingGoogle, setLoadingGoogle] = useState<boolean>(false);
-  const [loadingFacebook, setLoadingFacebook] = useState<boolean>(false);
+
 
   const router = useRouter();
 
   const socialActions = (action: string) => {
-    if (action === 'facebook') setLoadingFacebook(true);
     if (action === 'google') setLoadingGoogle(true);
 
     signIn(action, { redirect: false }).then((cb) => {
@@ -109,7 +108,6 @@ export const useAuth = (errorCb?: ErrorCb) => {
   return {
     loading,
     loadingGoogle,
-    loadingFacebook,
     socialActions,
     register,
     signin,
