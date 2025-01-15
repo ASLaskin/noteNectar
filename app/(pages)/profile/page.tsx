@@ -15,15 +15,20 @@ interface UserData {
 }
 
 export default function ProfilePage() {
-    const { data: session } = useSession();
     const [userData, setUserData] = useState<UserData | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const { data: session, status } = useSession();
 
     useEffect(() => {
+        if (status === "loading" || !session) {
+            setLoading(true);
+            return; 
+        }
+
         const fetchUserData = async () => {
             const userId = session?.user?.id;
-            console.log("The User we have: ", userId)
+            console.log("The User we have: ", userId);
 
             try {
                 setLoading(true);
@@ -41,7 +46,7 @@ export default function ProfilePage() {
         };
 
         fetchUserData();
-    }, []);
+    }, [session, status]); 
 
     if (loading) {
         return (
@@ -114,12 +119,9 @@ export default function ProfilePage() {
                             <Button className="mt-4 bg-primary text-white font-semibold shadow-md hover:bg-primary-dark transition">
                                 Buy More Credits
                             </Button>
-
                         </CardContent>
                     </Card>
                 </motion.div>
-
-
             </main>
         </div>
     );

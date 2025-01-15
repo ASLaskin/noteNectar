@@ -2,18 +2,32 @@
 
 import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const EditPage: React.FC = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const searchParams = useSearchParams();
   const notes = searchParams.get("notes") || "";
   const title = searchParams.get("title") || "Untitled Document";
   const [editableNotes, setEditableNotes] = useState(notes);
   const [saving, setSaving] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (status === "loading") {
+      setLoading(true);
+    } else {
+      setLoading(false);
+    }
+  }, [status]);
 
   const handleSave = async () => {
     const userId = session?.user?.id;
+
+    if (!userId) {
+      console.error("User ID is not available");
+      return;
+    }
 
     try {
       setSaving(true);
@@ -56,6 +70,14 @@ const EditPage: React.FC = () => {
       setSaving(false);
     }
   };
+
+  if (loading || status === "loading") {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <p className="text-gray-700">Loading session...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-800 p-4">
