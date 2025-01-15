@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
+import { Grid } from 'react-loader-spinner'
 
 const EditPage: React.FC = () => {
   const { data: session, status } = useSession();
@@ -74,7 +75,16 @@ const EditPage: React.FC = () => {
   if (loading || status === "loading") {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <p className="text-gray-700">Loading session...</p>
+        <Grid
+          visible={true}
+          height="80"
+          width="80"
+          color="#4f46e5"
+          ariaLabel="grid-loading"
+          radius="12.5"
+          wrapperStyle={{}}
+          wrapperClass="grid-wrapper"
+        />
       </div>
     );
   }

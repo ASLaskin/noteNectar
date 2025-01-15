@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import Header from "@/components/header";
 import { useSession } from "next-auth/react";
+import { Grid } from 'react-loader-spinner'
 
 interface UserData {
     credits: number;
@@ -23,7 +24,7 @@ export default function ProfilePage() {
     useEffect(() => {
         if (status === "loading" || !session) {
             setLoading(true);
-            return; 
+            return;
         }
 
         const fetchUserData = async () => {
@@ -46,12 +47,22 @@ export default function ProfilePage() {
         };
 
         fetchUserData();
-    }, [session, status]); 
+    }, [session, status]);
 
     if (loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-50">
-                <p className="text-gray-700">Loading...</p>
+            <div className="min-h-screen flex items-center justify-center">
+                <Grid
+                    visible={true}
+                    height="80"
+                    width="80"
+                    color="#4f46e5"
+                    ariaLabel="grid-loading"
+                    radius="12.5"
+                    wrapperStyle={{}}
+                    wrapperClass="grid-wrapper"
+                />
+
             </div>
         );
     }

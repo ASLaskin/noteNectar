@@ -13,6 +13,7 @@ import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { RotatingSquare } from "react-loader-spinner";
 
 type Note = {
   id: string;
@@ -81,7 +82,7 @@ export default function Notes() {
         throw new Error(error.message || "Failed to delete the note");
       }
 
-      console.log(`Note with ID: ${noteId} deleted successfully`);
+      toast.success("Note deleted successfully")
 
       setNotes((prevNotes) => {
         const updatedNotes = prevNotes.filter((note) => note.id !== noteId);
@@ -99,9 +100,21 @@ export default function Notes() {
   };
 
 
-
   if (isFetching) {
-    return <p className="flex align-center justify-center text-black/60">Loading notes...</p>;
+    return (
+      <div className="flex items-center justify-center space-x-4">
+        <p className="text-black/60">Loading notes...</p>
+        <RotatingSquare
+          visible={true}
+          height="100"
+          width="100"
+          color="#4f46e5"
+          ariaLabel="rotating-square-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+        />
+      </div>
+    );
   }
 
   if (notes.length === 0) {
