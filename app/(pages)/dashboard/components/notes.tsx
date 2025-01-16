@@ -26,6 +26,8 @@ export default function Notes() {
   const { data: session } = useSession();
   const [notes, setNotes] = useState<Note[]>([]);
   const [isFetching, setIsFetching] = useState(true);
+  const [editingNoteId, setEditingNoteId] = useState<string | null>(null);
+  const [editedTitle, setEditedTitle] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -35,6 +37,7 @@ export default function Notes() {
         console.error("User ID is missing.");
         return;
       }
+
       const cachedNotes = localStorage.getItem(`notes_${userId}`);
       if (cachedNotes) {
         setNotes(JSON.parse(cachedNotes));
@@ -64,41 +67,84 @@ export default function Notes() {
     fetchNotes();
   }, [session?.user?.id]);
 
-  const handleDelete = async (noteId: string) => {
-    console.log("Sending noteId:", noteId);
-
+  const handleRename = async (noteId: string, newTitle: string) => {
     try {
-      const body = JSON.stringify({ noteId });
-
-      const response = await fetch(`/api/documents/delete`, {
-        method: "DELETE",
+      const response = await fetch(`/api/documents/rename`, {
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body,
+        body: JSON.stringify({ noteId, newTitle }),
       });
 
       if (!response.ok) {
         const error = await response.json();
-        console.error("Delete API error:", error.message);
-        throw new Error(error.message || "Failed to delete the note");
+        throw new Error(error.message || "Failed to rename the note");
       }
 
-      toast.success("Note deleted successfully")
+      setNotes((prevNotes) =>
+        prevNotes.map((note) =>
+          note.id === noteId ? { ...note, title: newTitle } : note
+        )
+      );
 
-      setNotes((prevNotes) => {
-        const updatedNotes = prevNotes.filter((note) => note.id !== noteId);
+      const userId = session?.user?.id;
+      if (userId) {
+        const updatedNotes = notes.map((note) =>
+          note.id === noteId ? { ...note, title: newTitle } : note
+        );
+        localStorage.setItem(`notes_${userId}`, JSON.stringify(updatedNotes));
+      }
 
-        const userId = session?.user?.id;
-        if (userId) {
-          localStorage.setItem(`notes_${userId}`, JSON.stringify(updatedNotes));
-        }
-        
-        return updatedNotes;
-      });
+      toast.success("Note renamed successfully");
     } catch (error) {
-      console.error("Error deleting note:", error);
+      console.error("Error renaming note:", error);
+      toast.error("Failed to rename note");
     }
   };
 
+  const handleDelete = async (noteId: string) => {
+    try {
+      const response = await fetch(`/api/documents/delete`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ noteId }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Failed to delete the note");
+      }
+
+      setNotes((prevNotes) =>
+        prevNotes.filter((note) => note.id !== noteId)
+      );
+
+      const userId = session?.user?.id;
+      if (userId) {
+        const updatedNotes = notes.filter((note) => note.id !== noteId);
+        localStorage.setItem(`notes_${userId}`, JSON.stringify(updatedNotes));
+      }
+
+      toast.success("Note deleted successfully");
+    } catch (error) {
+      console.error("Error deleting note:", error);
+      toast.error("Failed to delete the note");
+    }
+  };
+
+
+  const handleBlur = async () => {
+    if (editingNoteId && editedTitle.trim() !== "") {
+      await handleRename(editingNoteId, editedTitle.trim());
+    }
+    setEditingNoteId(null);
+    setEditedTitle("");
+  };
+
+  const handleKeyDown = async (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      await handleBlur();
+    }
+  };
 
   if (isFetching) {
     return (
@@ -110,8 +156,6 @@ export default function Notes() {
           width="100"
           color="#4f46e5"
           ariaLabel="rotating-square-loading"
-          wrapperStyle={{}}
-          wrapperClass=""
         />
       </div>
     );
@@ -163,11 +207,28 @@ export default function Notes() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem>Rename</DropdownMenuItem>
-              <DropdownMenuItem>Move</DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => {
+                  setEditingNoteId(note.id);
+                  setEditedTitle(note.title);
+                }}
+              >
+                Rename
+              </DropdownMenuItem>
               <DropdownMenuItem>Share</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+          {editingNoteId === note.id && (
+            <input
+              type="text"
+              value={editedTitle}
+              onChange={(e) => setEditedTitle(e.target.value)}
+              onBlur={handleBlur}
+              onKeyDown={handleKeyDown}
+              autoFocus
+              className="text-black text-lg font-semibold border border-gray-300 rounded-md p-2"
+            />
+          )}
         </motion.div>
       ))}
     </div>
