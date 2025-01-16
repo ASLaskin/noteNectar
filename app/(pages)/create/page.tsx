@@ -10,8 +10,6 @@ import { motion } from "framer-motion";
 import Header from "@/components/header";
 
 const CreatePage: React.FC = () => {
-  const [extractedText, setExtractedText] = useState<string>("");
-  const [generatedNotes, setGeneratedNotes] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("");
   const router = useRouter();

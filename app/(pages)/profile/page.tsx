@@ -47,7 +47,7 @@ export default function ProfilePage() {
         };
 
         fetchUserData();
-    }, [session, status]);
+    }, [status]);
 
     if (loading) {
         return (
@@ -110,11 +110,13 @@ export default function ProfilePage() {
                                 <span className="font-semibold">Next Charge:</span>{" "}
                                 {userData.nextCharge}
                             </p>
-                            <div className="mt-10">
-                                <Button className="bg-red-600 hover:bg-red-700 text-white font-semibold shadow-md">
-                                    Cancel Subscription
-                                </Button>
-                            </div>
+                            {userData.status === "Free Plan" && (
+                                <div className="mt-10">
+                                    <Button className="bg-red-600 hover:bg-red-700 text-white font-semibold shadow-md">
+                                        Cancel Subscription
+                                    </Button>
+                                </div>
+                            )}
                         </CardContent>
                     </Card>
 
