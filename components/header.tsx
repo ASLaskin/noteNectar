@@ -27,7 +27,7 @@ const Header: React.FC = () => {
             <div className="container mx-auto px-4 py-6 flex justify-between items-center">
                 <Link href="/" className="flex items-center">
                     <Image src="/logo.svg" alt="logo" width={60} height={60} />
-                    <span className="ml-2 text-2xl font-bold">NoteNectar</span>
+                    <span className="ml-2 text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600">NoteNectar</span>
                 </Link>
                 <DropdownMenu>
                     <DropdownMenuTrigger>
@@ -40,18 +40,18 @@ const Header: React.FC = () => {
                         <DropdownMenuSeparator />
                         <Link href="/dashboard">
                         <DropdownMenuItem >
-                            <BookOpen className="mr-2 h-4 w-4" />
+                            <BookOpen className="mr-2 h-4 w-4 cursor-pointer" />
                             <span>Dashboard</span>
                         </DropdownMenuItem>
                         </Link>
                         <Link href="/profile">
                         <DropdownMenuItem >
-                            <User className="mr-2 h-4 w-4" />
+                            <User className="mr-2 h-4 w-4 cursor-pointer" />
                             <span>Profile</span>
                         </DropdownMenuItem>
                         </Link>
                         <DropdownMenuItem onClick={handleLogout}>
-                            <LogOut className="mr-2 h-4 w-4" />
+                            <LogOut className="mr-2 h-4 w-4 text-red-500" />
                             <span>Log out</span>
                         </DropdownMenuItem>
                     </DropdownMenuContent>

@@ -6,6 +6,7 @@ import BlurIn from "@/components/magicui/blur-in";
 import Header from "@/components/landingheader";
 import AnimatedImage from "@/components/AnimatedImage";
 const MotionDiv = motion.div;
+import Link from "next/link";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -65,9 +66,11 @@ export default function Home() {
             </motion.h2>
 
             <motion.div variants={itemVariants}>
+              <Link href="/auth">
               <button className="px-8 py-3 text-lg font-semibold text-white bg-indigo-600 rounded-full shadow-md hover:bg-indigo-700 transition duration-300 ease-in-out">
                 Get Started
               </button>
+              </Link>
             </motion.div>
           </div>
 

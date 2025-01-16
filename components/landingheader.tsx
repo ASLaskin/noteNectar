@@ -45,15 +45,10 @@ const Header = () => {
         <Link href="/" className="flex items-center">
           <Image src="./logo.svg" alt='logo' width={60} height={60} />
         </Link>
-        <nav className="hidden md:flex space-x-6">
+        <nav className="md:flex space-x-6">
           <Link href="/pricing">
             <button className="text-gray-700 hover:text-indigo-600 transition duration-300">
               Pricing
-            </button>
-          </Link>
-          <Link href="/about">
-            <button className="text-gray-700 hover:text-indigo-600 transition duration-300">
-              About
             </button>
           </Link>
           <Link href="/help">
