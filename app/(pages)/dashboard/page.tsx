@@ -1,13 +1,22 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { motion } from "framer-motion";
-import Notes from "./components/notes";
 import Header from "@/components/header";
+import { useSession } from "next-auth/react";
+
+const Notes = dynamic(() => import("./components/notes"), { ssr: false });
 
 export default function Dashboard() {
+  const { data: session, status } = useSession();
+
+  if (status === "loading") {
+    return null; 
+  }
+
   return (
     <div className="relative min-h-screen bg-white text-black">
       <Header />
@@ -16,7 +25,7 @@ export default function Dashboard() {
         <div className="flex justify-between items-center mb-6">
           <motion.h1
             className="text-3xl font-bold"
-            initial={{ opacity: 0, y: -20 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
