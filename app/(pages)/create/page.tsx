@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
 import Header from "@/components/header";
+import LinkUpload from "./components/linkUpload";
 
 const CreatePage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -54,14 +55,14 @@ const CreatePage: React.FC = () => {
       router.push(`/edit?notes=${encodeURIComponent(exampleNotes)}&title=${encodeURIComponent(title)}`);
 
     } catch (error) {
-      console.error("Error fetching notes:", error);
+      console.error("Error navigating:", error);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="relative min-h-screen bg-white text-black ">
+    <div className="relative min-h-screen bg-white text-black">
       <Header />
       <main className="container mx-auto px-4 py-12">
         <div className="flex justify-between items-center mb-6">
@@ -77,10 +78,16 @@ const CreatePage: React.FC = () => {
 
         <div className="bg-white shadow-md border border-gray-200 rounded-lg overflow-hidden">
           <div className="p-6">
-            <UploadForm onExtractedText={handleExtractedText} onTitle={setTitle} />
-            {loading && (
-              <p className="mt-4 text-lg text-gray-700">Generating summary...</p>
-            )}
+            <input
+              type="text"
+              placeholder="Enter Document Title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="border border-gray-300 p-2 rounded-lg w-full mb-4"
+            />
+
+            <UploadForm onExtractedText={handleExtractedText} title={title} />
+            <LinkUpload onExtractedText={handleExtractedText} title={title} />
           </div>
         </div>
       </main>
