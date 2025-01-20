@@ -60,7 +60,7 @@ const LinkUpload: React.FC<LinkUploadProps> = ({ onExtractedText,title }) => {
   };
 
   return (
-    <div className="p-8 bg-white shadow-md rounded-lg">
+    <div className="p-8 bg-white shadow-md rounded-lg flex flex-col items-center">
       <h1 className="text-2xl font-bold mb-4">YouTube Link Captions Fetcher</h1>
       <input
         type="text"
@@ -71,10 +71,10 @@ const LinkUpload: React.FC<LinkUploadProps> = ({ onExtractedText,title }) => {
       />
       <button
         onClick={fetchCaptions}
-        className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+        className="p-3 text-white rounded-lg w-full bg-indigo-600 hover:bg-indigo-700"
         disabled={loading}
       >
-        {loading ? "Fetching Captions..." : "Fetch Captions"}
+        {loading ? "Loading" : "Fetch Captions"}
       </button>
 
     </div>

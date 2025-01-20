@@ -57,6 +57,7 @@ const UploadForm: React.FC<UploadFormProps> = ({ onExtractedText, title}) => {
       }}
       className="flex flex-col items-center space-y-6 bg-white p-8 rounded-lg shadow-md border border-gray-200"
     >
+      <h1 className="text-2xl font-bold mb-4">File Upload</h1>
       <input
         type="file"
         accept="application/pdf"
@@ -66,7 +67,7 @@ const UploadForm: React.FC<UploadFormProps> = ({ onExtractedText, title}) => {
       <button
         type="submit"
         className={`p-3 text-white rounded-lg w-full ${
-          uploading ? "opacity-50 cursor-not-allowed" : "bg-primary hover:bg-primary-dark"
+          uploading ? "opacity-50 cursor-not-allowed" : "bg-indigo-600 hover:bg-indigo-700"
         }`}
         disabled={uploading}
       >
