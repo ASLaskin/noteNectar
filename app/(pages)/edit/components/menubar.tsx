@@ -5,11 +5,10 @@ import {
   RiCodeSSlashLine,
   RiListOrdered2,
 } from "react-icons/ri";
-import { Editor } from "@tiptap/react";
 import { AiOutlineRedo, AiOutlineUndo } from "react-icons/ai";
 import { BsTypeUnderline } from "react-icons/bs";
 import { IoListOutline } from "react-icons/io5";
-
+import { Editor } from "@tiptap/react";
 
 const Button = ({
   onClick,
@@ -26,17 +25,16 @@ const Button = ({
     type="button"
     onClick={onClick}
     disabled={disabled}
-    className={`p-2 ${isActive ? "bg-violet-500 text-white rounded-md" : ""}`}
+    className={`p-2 rounded-md transition ${isActive
+        ? "bg-indigo-600 text-white"
+        : "bg-white text-gray-700 hover:bg-gray-200"
+      } ${disabled ? "cursor-not-allowed opacity-50" : "hover:shadow-md"}`}
   >
     {children}
   </button>
 );
 
-export default function MenuBar({
-  editor,
-}: {
-  editor: Editor | null;
-}) {
+export default function MenuBar({ editor }: { editor: Editor | null }) {
   if (!editor) return null;
 
   const buttons = [
@@ -93,23 +91,46 @@ export default function MenuBar({
     },
   ];
 
-  return (
-    <div className="flex items-center gap-4 mb-6 p-4 rounded-lg shadow-sm">
-      {buttons.map(({ icon, onClick, isActive, disabled }, index) => (
-        <button
-          key={index}
-          onClick={onClick}
-          disabled={disabled}
-          className={`p-3 rounded-md transition ${isActive
-              ? "bg-indigo-600 text-white"
-              : "bg-white text-gray-700 hover:bg-gray-200"
-            } ${disabled ? "cursor-not-allowed opacity-50" : "hover:shadow-md"
-            }`}
-        >
-          {icon}
-        </button>
-      ))}
-    </div>
+  const headingButtons = [
+    { level: 1 as const, label: "H1" },
+    { level: 2 as const, label: "H2" },
+    { level: 3 as const, label: "H3" },
+  ];
 
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-4 p-4 rounded-lg shadow-sm">
+        {buttons.map(({ icon, onClick, isActive, disabled }, index) => (
+          <button
+            key={index}
+            onClick={onClick}
+            disabled={disabled}
+            className={`p-3 rounded-md transition ${isActive
+                ? "bg-indigo-600 text-white"
+                : "bg-white text-gray-700 hover:bg-gray-200"
+              } ${disabled ? "cursor-not-allowed opacity-50" : "hover:shadow-md"}`}
+          >
+            {icon}
+          </button>
+        ))}
+      </div>
+
+      <div className="flex items-center gap-4 p-4 rounded-lg shadow-sm">
+        {headingButtons.map(({ level, label }) => (
+          <button
+            key={level}
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level }).run()
+            }
+            className={`p-3 rounded-md transition ${editor.isActive("heading", { level })
+                ? "bg-indigo-600 text-white"
+                : "bg-white text-gray-700 hover:bg-gray-200"
+              }`}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+    </div>
   );
 }

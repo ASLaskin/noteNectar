@@ -91,33 +91,31 @@ const EditPage: React.FC = () => {
   }
 
   return (
-<div className="min-h-screen bg-gray-50">
-  <div className="container mx-auto px-4 py-12">
-    <div className="bg-white shadow-lg rounded-xl overflow-hidden">
-      <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-8">
-        <h1 className="text-4xl font-bold">{title}</h1>
-      </div>
-      <div className="p-6">
-        <RichTextEditor
-          initialContent={editableNotes}
-          onChange={(content) => setEditableNotes(content)}
-        />
-        <button
-          onClick={handleSave}
-          disabled={saving}
-          className={`mt-6 px-8 py-3 rounded-full text-lg font-semibold ${
-            saving
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-indigo-600 hover:bg-indigo-700 transition"
-          } text-white`}
-        >
-          {saving ? "Saving..." : "Save Document"}
-        </button>
+    <div className="min-h-screen bg-gray-50">
+      <div className="container mx-auto px-4 py-12">
+        <div className="bg-white shadow-lg rounded-xl overflow-hidden">
+          <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-8">
+            <h1 className="text-4xl font-bold">{title}</h1>
+          </div>
+          <div className="p-6">
+            <RichTextEditor
+              initialContent={editableNotes}
+              onChange={(content) => setEditableNotes(content)}
+            />
+            <button
+              onClick={handleSave}
+              disabled={saving}
+              className={`mt-6 px-8 py-3 rounded-full text-lg font-semibold ${saving
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-indigo-600 hover:bg-indigo-700 transition"
+                } text-white`}
+            >
+              {saving ? "Saving..." : "Save Document"}
+            </button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
-
   );
 };
 
