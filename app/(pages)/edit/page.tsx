@@ -3,14 +3,15 @@
 import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
-import { Grid } from 'react-loader-spinner'
+import { Grid } from "react-loader-spinner";
+import RichTextEditor from "./components/editor";
 
 const EditPage: React.FC = () => {
   const { data: session, status } = useSession();
   const searchParams = useSearchParams();
-  const notes = searchParams.get("notes") || "";
+  const initialContent = searchParams.get("notes") || "";
   const title = searchParams.get("title") || "Untitled Document";
-  const [editableNotes, setEditableNotes] = useState(notes);
+  const [editableNotes, setEditableNotes] = useState(initialContent);
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -49,8 +50,9 @@ const EditPage: React.FC = () => {
 
       const savedDocument = await response.json();
 
-      //use the actual _id
-      const existingDocuments = JSON.parse(localStorage.getItem(`notes_${userId}`) || "[]");
+      const existingDocuments = JSON.parse(
+        localStorage.getItem(`notes_${userId}`) || "[]"
+      );
       const newDocument = {
         id: savedDocument.id,
         title: savedDocument.title,
@@ -64,7 +66,6 @@ const EditPage: React.FC = () => {
       );
 
       console.log("Document saved and synced with localStorage");
-
     } catch (error) {
       console.error("Error saving document:", error);
     } finally {
@@ -90,31 +91,33 @@ const EditPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-800 p-4">
-      <div className="max-w-4xl mx-auto bg-white dark:bg-gray-900 rounded-lg shadow-xl">
-        <div className="bg-indigo-600 dark:bg-indigo-800 text-white p-6 rounded-t-lg">
-          <h1 className="text-3xl font-semibold">Edit Notes</h1>
-        </div>
-        <div className="bg-indigo-600 dark:bg-indigo-800 text-white p-6 rounded-t-lg">
-          <h1 className="text-3xl font-semibold">{title}</h1>
-        </div>
-        <div className="p-6">
-          <textarea
-            value={editableNotes}
-            onChange={(e) => setEditableNotes(e.target.value)}
-            className="w-full h-96 p-4 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-          />
-          <button
-            onClick={handleSave}
-            disabled={saving}
-            className={`mt-4 px-6 py-2 rounded-lg ${saving ? "bg-gray-400" : "bg-indigo-600 hover:bg-indigo-700"
-              } text-white`}
-          >
-            {saving ? "Saving..." : "Save Document"}
-          </button>
-        </div>
+<div className="min-h-screen bg-gray-50">
+  <div className="container mx-auto px-4 py-12">
+    <div className="bg-white shadow-lg rounded-xl overflow-hidden">
+      <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-8">
+        <h1 className="text-4xl font-bold">{title}</h1>
+      </div>
+      <div className="p-6">
+        <RichTextEditor
+          initialContent={editableNotes}
+          onChange={(content) => setEditableNotes(content)}
+        />
+        <button
+          onClick={handleSave}
+          disabled={saving}
+          className={`mt-6 px-8 py-3 rounded-full text-lg font-semibold ${
+            saving
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-indigo-600 hover:bg-indigo-700 transition"
+          } text-white`}
+        >
+          {saving ? "Saving..." : "Save Document"}
+        </button>
       </div>
     </div>
+  </div>
+</div>
+
   );
 };
 
