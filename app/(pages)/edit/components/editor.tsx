@@ -4,6 +4,7 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import MenuBar from "./menubar";
+import { marked } from "marked";
 
 type TextEditorProps = {
   onChange: (content: string) => void;
@@ -12,11 +13,11 @@ type TextEditorProps = {
 
 export default function RichTextEditor({
   onChange,
-  initialContent,
+  initialContent = "",
 }: TextEditorProps) {
   const editor = useEditor({
     extensions: [StarterKit, Underline],
-    content: initialContent,
+    content: marked(initialContent), 
     onUpdate: ({ editor }) => {
       onChange(editor.getHTML());
     },

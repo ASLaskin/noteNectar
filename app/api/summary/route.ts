@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
       messages: [
         {
           role: "user",
-          content: `Organize the following text into a sensical set of notes with definitions and explanations:\n\n${text}`,
+          content: `Organize the following text into well-structured Markdown notes. Use headings (e.g., #, ##), bullet points, bold, and italics for clear formatting.:\n\n${text}`,
         },
       ],
       stream: true,
