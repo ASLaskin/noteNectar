@@ -102,13 +102,10 @@ const CreatePage: React.FC = () => {
       //   setGeneratedNotes((prev) => prev + decoder.decode(value, { stream: true }));
       // }
 
-      // router.push(`/edit?notes=${encodeURIComponent(result)}`);
-
-
-      //This is temporary 
-      const result = exampleNotes;
-
-      handleSave(result);
+      //delete this line 
+      const text = exampleNotes
+      //text should be replaced with result
+      handleSave(text);
 
     } catch (error) {
       console.error("Error navigating:", error);
