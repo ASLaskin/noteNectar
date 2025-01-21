@@ -16,6 +16,58 @@ const CreatePage: React.FC = () => {
   const router = useRouter();
   const { data: session } = useSession();
 
+  const handleSave = async (result: string) => {
+    const userId = session?.user?.id;
+
+    if (!userId) {
+      console.error("User ID is not available");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const response = await fetch("/api/documents/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId,
+          title,
+          content: result,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to save the document");
+      }
+
+      const savedDocument = await response.json();
+
+      const existingDocuments = JSON.parse(
+        localStorage.getItem(`notes_${userId}`) || "[]"
+      );
+      const newDocument = {
+        id: savedDocument.id,
+        title: savedDocument.title,
+        content: savedDocument.content,
+        createdAt: savedDocument.createdAt,
+      };
+
+      localStorage.setItem(
+        `notes_${userId}`,
+        JSON.stringify([newDocument, ...existingDocuments])
+      );
+
+      router.push(`/edit?notes=${encodeURIComponent(result)}&title=${encodeURIComponent(title)}`);
+
+    } catch (error) {
+      console.error("Error saving document:", error);
+      toast.error("Failed to save document");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleExtractedText = async (text: string) => {
     const userId = session?.user?.id;
 
@@ -52,7 +104,11 @@ const CreatePage: React.FC = () => {
 
       // router.push(`/edit?notes=${encodeURIComponent(result)}`);
 
-      router.push(`/edit?notes=${encodeURIComponent(exampleNotes)}&title=${encodeURIComponent(title)}`);
+
+      //This is temporary 
+      const result = exampleNotes;
+
+      handleSave(result);
 
     } catch (error) {
       console.error("Error navigating:", error);
