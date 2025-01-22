@@ -1,5 +1,4 @@
 export const CONFIG = {
-  appTitle: 'test',
-  appDescription: 'description',
-  logo: '/logo.svg',
+  appTitle: 'NoteNectar',
+  appDescription: 'Summarize Notes',
 };

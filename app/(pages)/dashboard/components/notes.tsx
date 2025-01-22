@@ -14,6 +14,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { RotatingSquare } from "react-loader-spinner";
+import { HeartCrack } from 'lucide-react';
 
 type Note = {
   id: string;
@@ -162,7 +163,12 @@ export default function Notes() {
   }
 
   if (notes.length === 0) {
-    return <p className="flex align-center justify-center text-black/60">No notes available.</p>;
+    return (
+      <div className="flex align-center justify-center items-center flex-col">
+        <p className=" text-black/60">No notes available.</p>
+        <HeartCrack />
+      </div>
+    );
   }
 
   const handleNoteClick = (note: Note) => {
