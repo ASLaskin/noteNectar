@@ -166,7 +166,9 @@ export default function Notes() {
   }
 
   const handleNoteClick = (note: Note) => {
-    router.push(`/edit?notes=${encodeURIComponent(note.content)}&title=${encodeURIComponent(note.title)}`);
+    router.push(
+      `/edit?id=${encodeURIComponent(note.id)}&title=${encodeURIComponent(note.title)}`
+    );
   };
 
   return (
